@@ -6,7 +6,7 @@ import OtpModal from "./OtpModal";
 export default function OnboardingHome() {
   const [showLogin, setShowLogin] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
-  const [mobile, setMobile] = useState(""); // ✅ FIX
+  const [mobile, setMobile] = useState(""); 
 
   return (
     <div className="min-h-screen flex items-end justify-center bg-gray-50 font-sans">

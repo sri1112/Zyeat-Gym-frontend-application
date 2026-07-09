@@ -181,7 +181,7 @@ export default function Cart () {
               <img
                 src={
                   item.image
-                    ? `http://localhost:3001${item.image}`
+                    ? `${process.env.REACT_APP_BASE_URL}${item.image}`
                     : '/placeholder-food.jpg'
                 }
                 alt={item.product_name}

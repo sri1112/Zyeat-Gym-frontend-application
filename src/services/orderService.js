@@ -17,6 +17,11 @@ const orderService = {
 
   getOrderDetails (orderId) {
     return apiRequest(`${API_ENDPOINTS.ORDERS}/${orderId}`)
+  },
+  reorderOrder (orderId) {
+    return apiRequest(`${API_ENDPOINTS.ORDERS}/${orderId}/reorder`, {
+      method: 'POST'
+    })
   }
 }
 

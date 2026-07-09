@@ -32,46 +32,6 @@ export default function OtpModal ({ show, onClose, mobile }) {
       inputsRef.current[index - 1]?.focus()
     }
   }
-
-  // const verifyOtp = async () => {
-  //   try {
-  //     setLoading(true);
-  //     setError("");
-
-  //     const response = await fetch("http://localhost:3001/api/auth/verify-otp", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       credentials: "include", // ✅ REQUIRED
-  //       body: JSON.stringify({
-  //         mobile,
-  //         otp: otp.join("")
-  //       })
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (!response.ok) {
-  //       throw new Error(data.message || "Invalid OTP");
-  //     }
-
-  //     // ❌ DO NOT store JWT (HTTP-only cookie is used)
-  //     // localStorage.setItem("user", JSON.stringify(data.user)); ❌
-
-  //     // ✅ IMPORTANT: Sync auth state from backend
-  //     const user = await checkAuth();
-
-  //     if (user) {
-  //       navigate("/home", { replace: true });
-  //     } else {
-  //       navigate("/", { replace: true });
-  //     }
-
-  //   } catch (err) {
-  //     setError(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const verifyOtp = async () => {
     try {
       setLoading(true)

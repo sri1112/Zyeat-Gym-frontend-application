@@ -304,8 +304,8 @@ export default function Profile () {
 
               <span className='text-[13px] font-bold'>
                 {formatPlanDuration(
-                  activePlan?.data.start_date,
-                  activePlan?.data.end_date
+                  activePlan?.data?.start_date,
+                  activePlan?.data?.end_date
                 )}
               </span>
             </div>

@@ -1,34 +1,4 @@
-// import React, { useState } from "react";
-// import { Link } from "react-router-dom";
-// import zyeatlogo from "../../assests/zyeat-removebg.png";
 
-// export default function Header() {
-//   return (
-//     <div className="fixed top-0 z-20 w-full bg-white p-2 justify-between flex items-center shadow-sm">
-//       <div className="flex item-center">
-//         <Link to="/home" className="text-gray-700 mr-4">
-//           <svg
-//             className="w-6 h-6"
-//             xmlns="http://www.w3.org/2000/svg"
-//             fill="none"
-//             viewBox="0 0 24 24"
-//             stroke="currentColor"
-//           >
-//             <path
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               d="M15 19l-7-7 7-7"
-//             />
-//           </svg>
-//         </Link>
-//         {/* <h1 className="text-xl font-bold text-gray-800">Health Dashboard</h1> */}
-//       </div>
-
-//       <img src={zyeatlogo} alt="logo" className="w-20 h-10" />
-//     </div>
-//   );
-// }
 import React from 'react'
 import zyeatlogo from "../../assests/zyeat-removebg.png";
 import { Link } from 'react-router-dom'

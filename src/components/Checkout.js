@@ -5,7 +5,8 @@ import cartService from '../services/cartService'
 import orderService from '../services/orderService'
 import fallbackFood from '../assests/food2.jpeg'
 
-const API_URL = 'http://localhost:3001'
+const API_URL = process.env.REACT_APP_BASE_URL
+// const API_URL = 'https://gynode.1roofai.host'
 
 export default function Checkout () {
   const navigate = useNavigate()
@@ -250,7 +251,6 @@ export default function Checkout () {
             period: planData.period
           }
         })
-
       }
     } catch (error) {
       console.error('Create order error:', error)
@@ -628,8 +628,8 @@ export default function Checkout () {
               </div>
 
               <p className='text-[24px] font-extrabold text-[#065c2d]'>
-                {/* ₹{grandTotal.toFixed(2)} */}
-                ₹{Math.round(Number(grandTotal)).toLocaleString('en-IN')}
+                {/* ₹{grandTotal.toFixed(2)} */}₹
+                {Math.round(Number(grandTotal)).toLocaleString('en-IN')}
               </p>
             </div>
           </div>

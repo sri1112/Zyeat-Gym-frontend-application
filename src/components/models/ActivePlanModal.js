@@ -26,7 +26,9 @@ export default function ActivePlanModal ({
 }) {
   if (!show) return null
   console.log('Active Plan Modal:', { show, plan, loading, error })
-
+  const planData = plan?.data ?? null
+  console.log('PLAN RESPONSE:', plan)
+  console.log('PLAN DATA:', planData)
   return (
     <div className='fixed inset-0 z-[9999] flex items-end justify-center'>
       {/* Background Overlay */}
@@ -48,7 +50,6 @@ export default function ActivePlanModal ({
         {loading && (
           <div className='flex flex-col items-center justify-center py-20'>
             <div className='w-10 h-10 border-4 border-gray-200 border-t-[#065c2d] rounded-full animate-spin' />
-
             <p className='text-sm text-gray-500 mt-4'>Loading active plan...</p>
           </div>
         )}
@@ -71,11 +72,8 @@ export default function ActivePlanModal ({
                 />
               </svg>
             </div>
-
             <p className='text-gray-800 font-bold'>Unable to load plan</p>
-
             <p className='text-sm text-gray-500 mt-1'>{error}</p>
-
             <button
               onClick={onClose}
               className='mt-5 px-6 py-2.5 bg-[#065c2d] text-white rounded-xl font-semibold'
@@ -85,19 +83,16 @@ export default function ActivePlanModal ({
           </div>
         )}
 
-        {/* No Active Plan */}
-        {!loading && !error && !plan && (
+        {/* No Active Plan (Triggers when planData is null) */}
+        {!loading && !error && !planData && (
           <div className='px-5 py-16 text-center'>
             <div className='w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4'>
               <CalendarIcon className='w-8 h-8 text-gray-400' />
             </div>
-
             <h3 className='text-lg font-bold text-gray-900'>No Active Plan</h3>
-
             <p className='text-sm text-gray-500 mt-1'>
               You do not have an active subscription right now.
             </p>
-
             <button
               onClick={onClose}
               className='mt-5 px-6 py-2.5 bg-[#065c2d] text-white rounded-xl font-semibold'
@@ -107,8 +102,8 @@ export default function ActivePlanModal ({
           </div>
         )}
 
-        {/* Active Plan Data */}
-        {!loading && !error && plan && (
+        {/* Active Plan Data (Triggers ONLY when planData actually has data) */}
+        {!loading && !error && planData && (
           <div className='px-4 pb-8'>
             {/* Header */}
             <div className='flex items-center justify-between mb-4'>
@@ -116,12 +111,10 @@ export default function ActivePlanModal ({
                 <p className='text-[12px] text-gray-500 font-medium'>
                   Your Subscription
                 </p>
-
                 <h2 className='text-[22px] font-bold text-gray-900'>
                   Active Plan
                 </h2>
               </div>
-
               <button
                 onClick={onClose}
                 className='w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm'
@@ -146,23 +139,19 @@ export default function ActivePlanModal ({
             <div className='relative overflow-hidden bg-[#065c2d] rounded-3xl p-5 text-white shadow-lg'>
               <div className='absolute -right-10 -top-10 w-36 h-36 rounded-full bg-white/5' />
               <div className='absolute -right-5 bottom-[-60px] w-44 h-44 rounded-full bg-white/5' />
-
               <div className='relative'>
                 <div className='flex items-start justify-between'>
                   <div>
                     <span className='inline-flex items-center bg-white/15 text-[11px] font-bold px-3 py-1 rounded-full'>
                       ● ACTIVE
                     </span>
-
                     <h3 className='text-2xl font-bold mt-3'>
-                      {plan.data.plan_name || 'Active Plan'}
+                      {planData.plan_name || 'Active Plan'}
                     </h3>
-
                     <p className='text-white/70 text-sm mt-1'>
                       Your healthy meal subscription
                     </p>
                   </div>
-
                   <div className='w-12 h-12 bg-white/15 rounded-2xl flex items-center justify-center'>
                     <CalendarIcon className='w-6 h-6 text-white' />
                   </div>
@@ -173,17 +162,14 @@ export default function ActivePlanModal ({
                 <div className='grid grid-cols-2 gap-4'>
                   <div>
                     <p className='text-[11px] text-white/60'>Start Date</p>
-
                     <p className='font-bold text-sm mt-1'>
-                      {formatDate(plan.data.start_date)}
+                      {formatDate(planData.start_date)}
                     </p>
                   </div>
-
                   <div>
                     <p className='text-[11px] text-white/60'>End Date</p>
-
                     <p className='font-bold text-sm mt-1'>
-                      {formatDate(plan.data.end_date)}
+                      {formatDate(planData.end_date)}
                     </p>
                   </div>
                 </div>
@@ -196,12 +182,10 @@ export default function ActivePlanModal ({
                 <div className='w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center'>
                   <CalendarIcon className='w-5 h-5 text-[#065c2d]' />
                 </div>
-
                 <div className='ml-3'>
                   <p className='text-[11px] text-gray-500'>Plan Duration</p>
-
                   <p className='text-[14px] font-bold text-gray-900'>
-                    {formatDateRange(plan.data.start_date, plan.data.end_date)}
+                    {formatDateRange(planData.start_date, planData.end_date)}
                   </p>
                 </div>
               </div>
@@ -210,17 +194,15 @@ export default function ActivePlanModal ({
             {/* Progress Cards */}
             <div className='grid grid-cols-3 gap-2 mt-3'>
               <ProgressCard
-                value={plan.data.total_days ?? 0}
+                value={planData.total_days ?? 0}
                 label='Total Days'
               />
-
               <ProgressCard
-                value={plan.data.completed_days ?? 0}
+                value={planData.completed_days ?? 0}
                 label='Completed'
               />
-
               <ProgressCard
-                value={plan.data.remaining_days ?? 0}
+                value={planData.remaining_days ?? 0}
                 label='Remaining'
               />
             </div>
@@ -232,24 +214,21 @@ export default function ActivePlanModal ({
                   Subscription Details
                 </h3>
               </div>
-
-              <DetailRow label='Plan' value={plan.data.plan_name || '-'} />
-
+              <DetailRow label='Plan' value={planData.plan_name || '-'} />
               <DetailRow
                 label='Subscription ID'
                 value={
-                  plan.data.subscription_no ||
-                  `SUB-${String(plan.data.subscription_id).padStart(6, '0')}`
+                  planData.subscription_no ||
+                  `SUB-${String(planData.subscription_id).padStart(6, '0')}`
                 }
               />
-
               <DetailRow
                 label='Order ID'
-                value={`ORD-${String(plan.data.order_id).padStart(6, '0')}`}
+                value={`ORD-${String(planData.order_id).padStart(6, '0')}`}
               />
               <DetailRow
                 label='Status'
-                value={plan.data.status}
+                value={planData.status}
                 status
                 hideBorder
               />

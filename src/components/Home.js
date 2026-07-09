@@ -391,20 +391,6 @@ const ProductCard = ({ product, cartItems, refreshCart, onOpenModal }) => {
   const isInCart = !!cartItem
   const displayQuantity = cartItem ? cartItem.quantity : 0
 
-  // 2. Handle Adding to Cart
-  // const handleAdd = async e => {
-  //   e.preventDefault()
-  //   onOpenModal(product)
-  //   try {
-  //     setIsAdding(true)
-  //     await cartService.addToCart({ productId: safeId, quantity: 1 })
-  //     refreshCart()
-  //   } catch (error) {
-  //     console.error('Failed to add to cart:', error)
-  //   } finally {
-  //     setIsAdding(false)
-  //   }
-  // }
   const handleAdd = e => {
     e.preventDefault()
     e.stopPropagation()
@@ -533,7 +519,7 @@ const ProductCard = ({ product, cartItems, refreshCart, onOpenModal }) => {
             onClick={handleAdd}
             className='absolute left-1/2 -translate-x-1/2 bottom-[18px] sm:bottom-[-18px] w-[105px] sm:w-[165px] py-1 sm:py-2 bg-white border border-[#065f2a] rounded-xl sm:rounded-2xl text-[#065f2a] font-bold text-md sm:text-2xl shadow-md hover:bg-green-50 transition'
           >
-            'ADD +
+            ADD +
           </button>
         )}
       </div>

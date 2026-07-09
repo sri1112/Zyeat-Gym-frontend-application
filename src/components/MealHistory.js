@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import subscriptionService from '../services/subscriptionService'
 import fallbackFood from '../assests/food2.jpeg'
 
-const IMAGE_BASE_URL = 'http://localhost:3001'
+const IMAGE_BASE_URL = process.env.REACT_APP_BASE_URL
+
 
 const formatDate = value => {
   if (!value) return '-'

@@ -1,4 +1,5 @@
-const BASE_URL = 'http://localhost:3001/api'
+// apiRequest.js
+const BASE_URL = process.env.REACT_APP_API_URL
 
 export async function apiRequest (
   endpoint,
@@ -17,16 +18,38 @@ export async function apiRequest (
     options.body = JSON.stringify(body)
   }
 
-  console.log('API ENDPOINT:', endpoint)
-  console.log('API OPTIONS:', options)
-  console.log('API BODY:', options.body)
+  const url = `${BASE_URL}${endpoint}`
+  console.log('API REQUEST:', method, url)
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, options)
+  let response
+  try {
+    response = await fetch(url, options)
+  } catch (error) {
+    console.error('NETWORK ERROR:', error)
+    throw new Error('Cannot connect to the server. Please try again.')
+  }
 
-  const data = await response.json()
+  const contentType = response.headers.get('content-type')
+  let data
+
+  if (contentType && contentType.includes('application/json')) {
+    data = await response.json()
+  } else {
+    const text = await response.text()
+    console.error('NON-JSON SERVER RESPONSE:', text)
+
+    if (response.status === 503) {
+      throw new Error(
+        'Backend server is unavailable. Please restart the Node.js application.'
+      )
+    }
+    throw new Error(`Server returned ${response.status} ${response.statusText}`)
+  }
 
   if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong')
+    throw new Error(
+      data.message || `Request failed with status ${response.status}`
+    )
   }
 
   return data

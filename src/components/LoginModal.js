@@ -6,35 +6,6 @@ export default function LoginModal ({ show, onClose, onContinue }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // const handleLogin = async () => {
-  //   try {
-  //     setLoading(true);
-  //     setError("");
-
-  //     const response = await fetch("http://localhost:3001/api/auth/send-otp", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       body: JSON.stringify({ mobile })
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (!response.ok) {
-  //       throw new Error(data.message || "Failed to send OTP");
-  //     }
-
-  //     // ✅ NO JWT HERE
-  //     onContinue(mobile);
-
-  //   } catch (err) {
-  //     setError(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleLogin = async () => {
     try {
       setLoading(true)

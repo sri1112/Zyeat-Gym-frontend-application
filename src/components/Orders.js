@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import orderService from '../services/orderService'
+import OrderDetailsModal from './models/OrderDetailsModal'
 
 const formatCurrency = value => {
   return `₹${Number(value || 0).toFixed(2)}`
@@ -71,7 +72,7 @@ const getStatusStyle = status => {
   }
 }
 
-const OrderCard = ({ order, onViewDetails, onReorder }) => {
+const OrderCard = ({ order, onViewDetails, onReorder, reordering }) => {
   const status = getStatusStyle(order.status)
 
   const planName =
@@ -187,10 +188,11 @@ const OrderCard = ({ order, onViewDetails, onReorder }) => {
           String(order.status).toUpperCase() === 'CONFIRMED') && (
           <button
             type='button'
+            disabled={reordering}
             onClick={() => onReorder(order)}
-            className='w-full h-11 mt-3 rounded-xl bg-white border-[1.5px] border-[#8CC49A] text-[#065c2d] text-[12px] font-bold active:bg-green-50 transition-colors'
+            className='w-full h-11 mt-3 rounded-xl bg-white border-[1.5px] border-[#8CC49A] text-[#065c2d] text-[12px] font-bold active:bg-green-50 transition-colors disabled:opacity-60'
           >
-            Re-Order This Plan
+            {reordering ? 'Adding Plan...' : 'Re-Order This Plan'}
           </button>
         )}
       </div>
@@ -204,6 +206,35 @@ export default function Orders () {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [showOrderDetails, setShowOrderDetails] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [loadingOrderDetails, setLoadingOrderDetails] = useState(false)
+  const [orderDetailsError, setOrderDetailsError] = useState('')
+  const [reorderingId, setReorderingId] = useState(null)
+  const handleReorder = async order => {
+    try {
+      setReorderingId(order.order_id)
+
+      const response = await orderService.reorderOrder(order.order_id)
+
+      if (!response.success) {
+        throw new Error(response.message || 'Unable to reorder plan')
+      }
+
+      navigate('/plans', {
+        state: {
+          reordered: true,
+          cartId: response.data.cart_id,
+          planId: response.data.plan_id
+        }
+      })
+    } catch (error) {
+      console.error('REORDER ERROR:', error)
+      alert(error.message || 'Unable to reorder this plan')
+    } finally {
+      setReorderingId(null)
+    }
+  }
 
   const loadOrders = async () => {
     try {
@@ -233,33 +264,48 @@ export default function Orders () {
     loadOrders()
   }, [])
 
-  const handleViewDetails = order => {
-    navigate(`/orders/${order.order_id}`, {
-      state: {
-        order
-      }
-    })
-  }
+  const handleViewDetails = async order => {
+    try {
+      setShowOrderDetails(true)
+      setLoadingOrderDetails(true)
+      setOrderDetailsError('')
 
-  const handleReorder = order => {
-    /*
-     * Re-order API is not available in your current orderService.
-     *
-     * For now we send the old order to Plans page.
-     * Later you can create:
-     *
-     * POST /orders/:orderId/reorder
-     */
+      // Show list data immediately while API is loading
+      setSelectedOrder(order)
 
-    navigate('/plans', {
-      state: {
-        reorderOrder: order
+      // GET /api/orders/:id
+      const response = await orderService.getOrderDetails(order.order_id)
+
+      console.log('ORDER DETAILS RESPONSE:', response)
+
+      if (response?.success) {
+        setSelectedOrder(response.data)
+      } else {
+        throw new Error(response?.message || 'Unable to load order details.')
       }
-    })
+    } catch (error) {
+      console.error('Order Details Error:', error)
+
+      setOrderDetailsError(error?.message || 'Unable to load order details.')
+    } finally {
+      setLoadingOrderDetails(false)
+    }
   }
 
   return (
     <div className='min-h-screen bg-[#F7F8F7] pb-24 font-sans'>
+      <OrderDetailsModal
+        show={showOrderDetails}
+        onClose={() => {
+          setShowOrderDetails(false)
+          setSelectedOrder(null)
+          setOrderDetailsError('')
+        }}
+        order={selectedOrder}
+        loading={loadingOrderDetails}
+        error={orderDetailsError}
+      />
+
       {/* Header */}
 
       <div className='sticky top-0 z-30 bg-white border-b border-gray-100'>
@@ -429,6 +475,7 @@ export default function Orders () {
               order={order}
               onViewDetails={handleViewDetails}
               onReorder={handleReorder}
+              reordering={reorderingId === order.order_id}
             />
           ))}
 

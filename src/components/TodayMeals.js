@@ -94,7 +94,9 @@ export default function TodayMeals () {
           >
             <div className='flex gap-4'>
               <img
-                src={`http://localhost:3001${meal.image}`}
+                // src={`https://gynode.1roofai.host${meal.image}`}
+                src={`${process.env.REACT_APP_BASE_URL}${meal.image}`}
+
                 alt={meal.product_name}
                 className='w-24 h-24 rounded-xl object-cover'
                 onError={e => {
