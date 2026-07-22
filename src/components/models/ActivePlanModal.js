@@ -15,7 +15,7 @@ const formatDateRange = (startDate, endDate) => {
   if (!startDate || !endDate) return '-'
 
   return `${formatDate(startDate)} - ${formatDate(endDate)}`
-}
+} 
 
 export default function ActivePlanModal ({
   show,

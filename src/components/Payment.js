@@ -243,7 +243,7 @@ export default function Payment () {
               <p className='text-[11px] text-white/70'>Total Amount</p>
 
               <h2 className='text-[34px] leading-none font-extrabold text-white mt-2'>
-                ₹{formatAmount(order.grand_total)}
+                ₹{Math.round(formatAmount(order.grand_total)).toFixed(0)}
               </h2>
 
               <div className='mt-5 pt-4 border-t border-white/15 flex items-center justify-between'>
@@ -455,7 +455,7 @@ export default function Payment () {
                 <span className='text-[12px] text-gray-500'>Order Amount</span>
 
                 <span className='text-[13px] font-semibold text-gray-900'>
-                  ₹{formatAmount(order.grand_total)}
+                  ₹{Math.round(formatAmount(order.grand_total))}
                 </span>
               </div>
 
@@ -474,7 +474,7 @@ export default function Payment () {
               </span>
 
               <span className='text-[22px] font-extrabold text-[#065c2d]'>
-                ₹{formatAmount(order.grand_total)}
+                ₹{Math.round(formatAmount(order.grand_total))}
               </span>
             </div>
           </div>
@@ -506,7 +506,7 @@ export default function Payment () {
               <p className='text-[10px] text-gray-400'>Total Amount</p>
 
               <h2 className='text-[22px] font-extrabold text-gray-900'>
-                ₹{formatAmount(order.grand_total)}
+                ₹{Math.round(formatAmount(order.grand_total))}
               </h2>
             </div>
 
@@ -528,7 +528,7 @@ export default function Payment () {
                 </>
               ) : (
                 <>
-                  Pay ₹{formatAmount(order.grand_total)}
+                  Pay ₹{Math.round(formatAmount(order.grand_total))}
                   <span className='text-[18px]'>›</span>
                 </>
               )}

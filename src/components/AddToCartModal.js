@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import fallbackFood from '../assests/food2.jpeg'
+import { toast } from 'react-toastify'
 
 const AddToCartModal = ({ product, onClose, onConfirm }) => {
   /*
@@ -8,7 +9,7 @@ const AddToCartModal = ({ product, onClose, onConfirm }) => {
    * quantity     -> 10 / 100 / 2
    * product_unit -> grams / pieces
    */
-
+  console.log(' product timings :: ', product)
   const baseQuantity =
     Number(product?.quantity ?? product?.product_quantity) || 1
 
@@ -27,7 +28,12 @@ const AddToCartModal = ({ product, onClose, onConfirm }) => {
    */
   const [quantity, setQuantity] = useState(baseQuantity)
 
-  const [selectedTime, setSelectedTime] = useState('Morning')
+  // const [selectedTime, setSelectedTime] = useState('Morning')
+  const [selectedTime, setSelectedTime] = useState(() => {
+    if (product?.morningAvailable) return 'Morning'
+    if (product?.eveningAvailable) return 'Evening'
+    return null
+  })
 
   if (!product) return null
 
@@ -72,6 +78,10 @@ const AddToCartModal = ({ product, onClose, onConfirm }) => {
   }
 
   const handleConfirm = () => {
+    if (!selectedTime) {
+      toast.error('This product is not available for Morning or Evening.')
+      return
+    }
     onConfirm({
       quantity,
       unit: fullUnit,
@@ -168,12 +178,16 @@ const AddToCartModal = ({ product, onClose, onConfirm }) => {
           {/* Morning */}
           <button
             type='button'
+            disabled={!product.morningAvailable}
             onClick={() => setSelectedTime('Morning')}
-            className={`h-[58px] px-3 rounded-xl border flex items-center justify-between transition ${
-              selectedTime === 'Morning'
-                ? 'border-[#065c2d] bg-[#f3fbf5]'
-                : 'border-gray-200 bg-white'
-            }`}
+            className={`h-[58px] px-3 rounded-xl border flex items-center justify-between transition
+  ${
+    !product.morningAvailable
+      ? 'bg-gray-100 border-gray-200 opacity-50 cursor-not-allowed'
+      : selectedTime === 'Morning'
+      ? 'border-[#065c2d] bg-[#f3fbf5]'
+      : 'border-gray-200 bg-white'
+  }`}
           >
             <div className='flex items-center gap-2'>
               <span className='text-base'>🌤️</span>
@@ -186,7 +200,6 @@ const AddToCartModal = ({ product, onClose, onConfirm }) => {
                 </p>
               </div>
             </div>
-
             <div
               className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                 selectedTime === 'Morning'
@@ -203,12 +216,16 @@ const AddToCartModal = ({ product, onClose, onConfirm }) => {
           {/* Evening */}
           <button
             type='button'
+            disabled={!product.eveningAvailable}
             onClick={() => setSelectedTime('Evening')}
-            className={`h-[58px] px-3 rounded-xl border flex items-center justify-between transition ${
-              selectedTime === 'Evening'
-                ? 'border-[#065c2d] bg-[#f3fbf5]'
-                : 'border-gray-200 bg-white'
-            }`}
+            className={`h-[58px] px-3 rounded-xl border flex items-center justify-between transition
+  ${
+    !product.eveningAvailable
+      ? 'bg-gray-100 border-gray-200 opacity-50 cursor-not-allowed'
+      : selectedTime === 'Evening'
+      ? 'border-[#065c2d] bg-[#f3fbf5]'
+      : 'border-gray-200 bg-white'
+  }`}
           >
             <div className='flex items-center gap-2'>
               <span className='text-base'>🌙</span>
@@ -232,6 +249,11 @@ const AddToCartModal = ({ product, onClose, onConfirm }) => {
               )}
             </div>
           </button>
+          {!product.morningAvailable && !product.eveningAvailable && (
+            <p className='text-red-500 text-xs mt-2'>
+              This product is currently unavailable.
+            </p>
+          )}
         </div>
 
         {/* Quantity Header */}

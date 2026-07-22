@@ -6,7 +6,6 @@ import Dashboard from '../components/Dashboard'
 import Orders from '../components/Orders'
 import Plans from '../components/Plans'
 import Profile from '../components/Profile'
-import DeleteAcount from '../components/DeleteAcount'
 import ProductDetails from '../components/ProductDetails'
 import Cart from '../components/Cart'
 import Checkout from '../components/Checkout'
@@ -17,6 +16,10 @@ import Payment from '../components/Payment'
 import PaymentSuccess from '../components/PaymentSuccess'
 import Subscription from '../components/Subscription'
 import MealHistory from '../components/MealHistory'
+import HealthInformation from '../components/HealthInformation'
+import TermsConditions from '../components/TermsConditions'
+import PrivacyPolicy from '../components/PrivacyPolicy'
+import DeleteAccount from '../components/DeleteAccount'
 
 export default function AppRoutes () {
   return (
@@ -34,7 +37,6 @@ export default function AppRoutes () {
           <Route path='/orders' element={<Orders />} />
           <Route path='/plans' element={<Plans />} />
           <Route path='/profile' element={<Profile />} />
-          <Route path='/deleteacount' element={<DeleteAcount />} />
           <Route path='/product-details/:id' element={<ProductDetails />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/checkout' element={<Checkout />} />
@@ -43,6 +45,10 @@ export default function AppRoutes () {
           <Route path='/payment-success' element={<PaymentSuccess />} />
           <Route path='/subscriptions' element={<Subscription />} />
           <Route path='/meal-history' element={<MealHistory />} />
+          <Route path='/health' element={<HealthInformation />} />
+          <Route path='/terms' element={<TermsConditions />} />
+          <Route path='/privacy' element={<PrivacyPolicy />} />
+          <Route path='/delete-account' element={<DeleteAccount />} />
         </Route>
       </Route>
     </Routes>

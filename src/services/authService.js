@@ -34,6 +34,11 @@ const authService = {
     return apiRequest(API_ENDPOINTS.AUTH.LOGOUT, {
       method: 'POST'
     })
+  },
+  deleteAccount () {
+    return apiRequest(API_ENDPOINTS.AUTH.DELETE_ACCOUNT, {
+      method: 'DELETE'
+    })
   }
 }
 

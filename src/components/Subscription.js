@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-
 import { useNavigate } from 'react-router-dom'
-
 import subscriptionService from '../services/subscriptionService'
-
 import fallbackFood from '../assests/food2.jpeg'
 
 const IMAGE_BASE_URL = process.env.REACT_APP_BASE_URL
@@ -71,11 +68,8 @@ const getPeriodInfo = period => {
 
 const MealCard = ({ meal, processingId, onConsume, onSkip }) => {
   const period = getPeriodInfo(meal.period)
-
   const isProcessing = processingId === meal.mapping_id
-
   const status = String(meal.status || 'PENDING').toUpperCase()
-
   const isPending = status === 'PENDING' || status === 'DELIVERED'
 
   return (
@@ -83,7 +77,6 @@ const MealCard = ({ meal, processingId, onConsume, onSkip }) => {
       <div className='p-4'>
         <div className='flex gap-3'>
           {/* Image */}
-
           <div className='relative w-[94px] h-[94px] flex-shrink-0 rounded-2xl overflow-hidden bg-gray-100'>
             <img
               src={getImageUrl(meal.image)}
@@ -100,7 +93,6 @@ const MealCard = ({ meal, processingId, onConsume, onSkip }) => {
           </div>
 
           {/* Information */}
-
           <div className='flex-1 min-w-0'>
             <div className='flex items-start justify-between gap-2'>
               <div className='min-w-0'>
@@ -119,6 +111,7 @@ const MealCard = ({ meal, processingId, onConsume, onSkip }) => {
             </div>
 
             <div className='flex flex-wrap gap-2 mt-3'>
+              {/* Period Badge (Kept this one, removed the duplicate below) */}
               <div className='px-2.5 py-1.5 rounded-lg bg-[#F2FAF3] text-[#065c2d] text-[9px] font-bold'>
                 {period.icon} {period.title}
               </div>
@@ -134,39 +127,39 @@ const MealCard = ({ meal, processingId, onConsume, onSkip }) => {
         </div>
 
         {/* Date */}
-
-        <div className='mt-4 pt-3 border-t border-dashed border-gray-200 flex items-center justify-between'>
-          <div>
+        <div className='mt-4 pt-3 border-t border-dashed border-gray-200 flex items-center justify-between gap-3'>
+          <div className='min-w-0'>
             <p className='text-[9px] text-gray-400'>Scheduled Date</p>
-
-            <p className='text-[11px] font-bold text-gray-800 mt-1'>
+            <p className='text-[11px] font-bold text-gray-800 mt-1 truncate'>
               {formatDate(meal.delivery_date)}
             </p>
           </div>
 
-          <div className='text-right'>
-            <p className='text-[9px] text-gray-400'>Meal Time</p>
-
-            <p className='text-[11px] font-bold text-[#065c2d] mt-1'>
-              {period.title}
-            </p>
-          </div>
+          {isPending && (
+            <button
+              type='button'
+              disabled={isProcessing}
+              onClick={() => onConsume(meal.mapping_id)}
+              className='flex-shrink-0 h-9 px-4 rounded-xl bg-[#065c2d] text-white text-[11px] font-bold disabled:opacity-50 active:scale-95 transition-all shadow-sm'
+            >
+              {isProcessing ? 'Updating...' : 'Mark Consumed'}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Actions */}
-
-      {isPending && (
+      {/* {isPending && (
         <div className='grid grid-cols-2 gap-3 px-4 pb-4'>
-          <button
+          {/* <button
             type='button'
             disabled={isProcessing}
             onClick={() => onSkip(meal.mapping_id)}
             className='h-11 rounded-xl border border-gray-200 text-gray-600 text-[12px] font-bold disabled:opacity-50'
           >
             {isProcessing ? 'Please wait...' : 'Skip Meal'}
-          </button>
-
+          </button> */}
+      {/* 
           <button
             type='button'
             disabled={isProcessing}
@@ -176,42 +169,39 @@ const MealCard = ({ meal, processingId, onConsume, onSkip }) => {
             {isProcessing ? 'Updating...' : 'Mark Consumed'}
           </button>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
 
 export default function Subscription () {
   const navigate = useNavigate()
-
   const [meals, setMeals] = useState([])
-
   const [loading, setLoading] = useState(true)
-
   const [error, setError] = useState('')
-
   const [processingId, setProcessingId] = useState(null)
 
   const loadTodayMeals = useCallback(async () => {
     try {
       setLoading(true)
-
       setError('')
 
       const response = await subscriptionService.getTodayMeals()
 
       if (response?.success) {
-        setMeals(Array.isArray(response.data) ? response.data : [])
+        // Automatically remove any duplicate data coming from the API using mapping_id
+        const apiMeals = Array.isArray(response.data) ? response.data : []
+        const uniqueMeals = Array.from(
+          new Map(apiMeals.map(meal => [meal.mapping_id, meal])).values()
+        )
+        setMeals(uniqueMeals)
       } else {
         setMeals([])
-
         setError(response?.message || 'Unable to load meals')
       }
     } catch (error) {
       console.error('Load subscription error:', error)
-
       setMeals([])
-
       setError(error?.message || 'Unable to load subscription')
     } finally {
       setLoading(false)
@@ -225,17 +215,14 @@ export default function Subscription () {
   const handleConsume = async mappingId => {
     try {
       setProcessingId(mappingId)
-
       const response = await subscriptionService.consumeMeal(mappingId)
 
       if (!response?.success) {
         throw new Error(response?.message || 'Unable to consume meal')
       }
-
       await loadTodayMeals()
     } catch (error) {
       console.error(error)
-
       alert(error.message || 'Unable to update meal')
     } finally {
       setProcessingId(null)
@@ -245,17 +232,14 @@ export default function Subscription () {
   const handleSkip = async mappingId => {
     try {
       setProcessingId(mappingId)
-
       const response = await subscriptionService.skipMeal(mappingId)
 
       if (!response?.success) {
         throw new Error(response?.message || 'Unable to skip meal')
       }
-
       await loadTodayMeals()
     } catch (error) {
       console.error(error)
-
       alert(error.message || 'Unable to update meal')
     } finally {
       setProcessingId(null)
@@ -265,7 +249,6 @@ export default function Subscription () {
   return (
     <div className='min-h-screen bg-[#F7F8F7] pb-28'>
       {/* Header */}
-
       <div className='sticky top-0 z-30 bg-white border-b border-gray-100'>
         <div className='max-w-md mx-auto h-[68px] px-5 flex items-center justify-between'>
           <button
@@ -292,7 +275,6 @@ export default function Subscription () {
             <h1 className='text-[17px] font-bold text-gray-900'>
               My Subscription
             </h1>
-
             <p className='text-[10px] text-gray-400'>Today's healthy meals</p>
           </div>
 
@@ -313,7 +295,6 @@ export default function Subscription () {
                 strokeLinejoin='round'
                 d='M12 8v4l3 2'
               />
-
               <circle cx='12' cy='12' r='9' />
             </svg>
           </button>
@@ -322,13 +303,11 @@ export default function Subscription () {
 
       <div className='max-w-md mx-auto px-5 pt-5'>
         {/* Heading */}
-
         <div className='flex items-start justify-between mb-5'>
           <div>
             <h2 className='text-[19px] font-extrabold text-gray-900'>
               Today's Meals
             </h2>
-
             <p className='text-[11px] text-gray-400 mt-1'>
               Stay consistent with your plan
             </p>
@@ -342,7 +321,6 @@ export default function Subscription () {
         </div>
 
         {/* Loading */}
-
         {loading && (
           <div className='space-y-4'>
             {[1, 2, 3].map(item => (
@@ -355,15 +333,11 @@ export default function Subscription () {
         )}
 
         {/* Error */}
-
         {!loading && error && (
           <div className='bg-white rounded-[22px] border border-gray-100 p-7 text-center'>
             <div className='text-4xl'>⚠️</div>
-
             <h2 className='text-[17px] font-bold mt-4'>Unable to Load Meals</h2>
-
             <p className='text-[12px] text-gray-500 mt-2'>{error}</p>
-
             <button
               type='button'
               onClick={loadTodayMeals}
@@ -375,19 +349,15 @@ export default function Subscription () {
         )}
 
         {/* Empty */}
-
         {!loading && !error && meals.length === 0 && (
           <div className='bg-white rounded-[22px] border border-gray-100 p-8 text-center'>
             <div className='w-20 h-20 rounded-full bg-[#EEF8F1] flex items-center justify-center mx-auto text-3xl'>
               🍽️
             </div>
-
             <h2 className='text-[19px] font-extrabold mt-5'>No Meals Today</h2>
-
             <p className='text-[12px] leading-5 text-gray-500 mt-2'>
               You do not have any meals scheduled for today.
             </p>
-
             <button
               type='button'
               onClick={() => navigate('/meal-history')}
@@ -399,7 +369,6 @@ export default function Subscription () {
         )}
 
         {/* Meals */}
-
         {!loading && !error && meals.length > 0 && (
           <div className='space-y-4'>
             {meals.map(meal => (

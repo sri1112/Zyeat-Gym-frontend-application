@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 export default function Header () {
   return (
-    <div className='fixed top-0 z-20 w-full bg-white px-5 py-4 flex justify-between items-center bg-white'>
+    <div className='fixed top-0 z-50 w-full bg-white px-5 py-4 flex justify-between items-center bg-white'>
       {/* Left Side: Profile Image & App Name */}
       <div className='flex items-center gap-3'>    
 

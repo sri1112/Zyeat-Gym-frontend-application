@@ -106,9 +106,11 @@ export default function ProductDetails () {
           </svg>
         </button>
 
-        <h1 className='text-[17px] font-bold text-gray-900'>Product Details</h1>
+        <h1 className='absolute left-1/2 -translate-x-1/2 text-[17px] font-bold text-gray-900'>
+          Product Details
+        </h1>
 
-        <div className='flex items-center gap-3'>
+        {/* <div className='flex items-center gap-3'>
           <button
             onClick={() => setIsFavorite(!isFavorite)}
             className='text-gray-800 transition-colors'
@@ -145,7 +147,7 @@ export default function ProductDetails () {
               />
             </svg>
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* --- Hero Image --- */}
@@ -325,21 +327,21 @@ export default function ProductDetails () {
       </div>
 
       {/* --- Bottom Fixed Action Bar --- */}
-      <div className='fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-5 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] flex justify-between items-center z-40 pb-safe'>
+      {/* <div className='fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-5 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] flex justify-between items-center z-40 pb-safe'>
         {/* Left: Price Details */}
-        <div className='flex flex-col'>
+      {/* <div className='flex flex-col'>
           <p className='text-[20px] font-extrabold text-[#0D6E26] leading-none'>
             ₹{product.price || 0}
           </p>
           <p className='text-[11px] text-gray-500 mt-1 font-medium'>
             Per Serving
           </p>
-        </div>
+        </div> */}
 
-        {/* Right side: Actions */}
-        <div className='flex gap-3 h-[46px]'>
-          {/* Quantity Selector */}
-          <div className='flex items-center border border-[#0D6E26]/30 rounded-xl bg-white w-[90px]'>
+      {/* Right side: Actions */}
+      {/* <div className='flex gap-3 h-[46px]'> */}
+      {/* Quantity Selector */}
+      {/* <div className='flex items-center border border-[#0D6E26]/30 rounded-xl bg-white w-[90px]'>
             <button
               onClick={handleDecrement}
               className='flex-1 h-full flex items-center justify-center text-[#0D6E26] text-lg font-medium rounded-l-xl hover:bg-green-50 transition-colors'
@@ -355,10 +357,10 @@ export default function ProductDetails () {
             >
               +
             </button>
-          </div>
+          </div> */}
 
-          {/* Add Button */}
-          <button
+      {/* Add Button */}
+      {/* <button
             onClick={handleAddToCart}
             disabled={adding}
             className='bg-[#0D6E26] hover:bg-green-800 transition-colors text-white rounded-xl px-5 flex flex-col items-center justify-center min-w-[140px] disabled:opacity-70 shadow-sm'
@@ -384,7 +386,7 @@ export default function ProductDetails () {
             </span>
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

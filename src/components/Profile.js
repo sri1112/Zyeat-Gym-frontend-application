@@ -210,14 +210,14 @@ export default function Profile () {
           </div>
 
           {/* Camera Icon Overlay (Triggers Edit Modal) */}
-          <button className='absolute bottom-0 right-0 bg-[#065c2d] text-white p-1.5 rounded-full border-2 border-white shadow-sm'>
-            <svg
+          {/* <button className='absolute bottom-0 right-0 bg-[#065c2d] text-white p-1.5 rounded-full border-2 border-white shadow-sm'>
+            {/* <svg
               className='w-3.5 h-3.5'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
               strokeWidth={2}
-            >
+            > */}
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -228,8 +228,8 @@ export default function Profile () {
                 strokeLinejoin='round'
                 d='M15 13a3 3 0 11-6 0 3 3 0 016 0z'
               />
-            </svg>
-          </button>
+            {/* </svg> */}
+          {/* </button> */}
         </div>
 
         <div className='ml-4'>
@@ -333,7 +333,7 @@ export default function Profile () {
                 />
               </svg>
               <span className='text-[13px] font-bold'>
-                ₹{activePlan?.data?.total_paid || '0.00'}
+                ₹{Number(activePlan?.data?.total_price || 0).toFixed(0)}
               </span>
             </div>
             <span className='text-[11px] text-gray-500 ml-5.5 mt-0.5'>
@@ -344,7 +344,7 @@ export default function Profile () {
       </div>
 
       {/* --- Action Grid Buttons --- */}
-      <div className='px-4 mb-2 grid grid-cols-4 gap-2 grid-shadow-[0px_1px_4px_rgba(0,0,0,0.16)]'>
+      <div className='px-4 mb-2 grid grid-cols-3 gap-2 grid-shadow-[0px_1px_4px_rgba(0,0,0,0.16)]'>
         <ActionButton
           onClick={handleOpenActivePlan}
           icon={CalendarIcon}
@@ -357,7 +357,7 @@ export default function Profile () {
           icon={CardIcon}
           label='Payments'
         />
-        <ActionButton to='/address' icon={LocationIcon} label='Address' />
+        {/* <ActionButton to='/address' icon={LocationIcon} label='Address' /> */}
       </div>
 
       {/* --- Account Section --- */}
@@ -376,7 +376,7 @@ export default function Profile () {
             icon={HeartbeatIcon}
             label='Health Information'
           />
-          <ListRow
+          {/* <ListRow
             to='/preferences'
             icon={LeafIcon}
             label='Dietary Preferences'
@@ -386,7 +386,10 @@ export default function Profile () {
             icon={ShieldCheckIcon}
             label='Allergies / Restrictions'
             hideBorder
-          />
+          /> */}
+          <ListRow to='/terms' icon={DocumentIcon} label='Terms & Conditions' />
+          <ListRow to='/privacy' icon={ShieldIcon} label='Privacy Policy' />
+
           <ListRow
             to='/delete-account'
             icon={TrashIcon}
@@ -394,11 +397,19 @@ export default function Profile () {
             isLogout={true}
             hideBorder
           />
+
+          <ListRow
+            onClick={handleLogout}
+            icon={LogoutIcon}
+            label='Logout'
+            isLogout
+            hideBorder
+          />
         </div>
       </div>
 
       {/* --- Support & Others Section --- */}
-      <div className='px-4 '>
+      {/* <div className='px-4 '>
         <h3 className='text-[14px] font-bold text-gray-500 mb-2 px-1'>
           Support & Others
         </h3>
@@ -418,7 +429,7 @@ export default function Profile () {
           <ListRow to='/terms' icon={DocumentIcon} label='Terms & Conditions' />
           <ListRow to='/privacy' icon={ShieldIcon} label='Privacy Policy' />
 
-          {/* Dynamic Logout Row hooked to your function */}
+        
           <ListRow
             onClick={handleLogout}
             icon={LogoutIcon}
@@ -427,7 +438,7 @@ export default function Profile () {
             hideBorder
           />
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

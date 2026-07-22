@@ -467,13 +467,13 @@ export default function OrderDetailsModal ({
               </div>
 
               {/* Close Button */}
-              <button
+              {/* <button
                 type='button'
                 onClick={onClose}
                 className='w-full h-[52px] mt-4 rounded-2xl bg-[#065c2d] text-white text-[13px] font-bold shadow-sm active:scale-[0.99] transition-transform'
               >
                 Done
-              </button>
+              </button> */}
             </>
           )}
         </div>

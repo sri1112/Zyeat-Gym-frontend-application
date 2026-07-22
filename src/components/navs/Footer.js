@@ -49,7 +49,7 @@ export default function Footer ({ activePath = '/home' }) {
     },
     {
       to: '/subscriptions',
-      label: 'Subscriptions',
+      label: "Today Meal's",
       icon: (
         <div className='relative mb-1'>
           <svg

@@ -382,7 +382,7 @@ export default function AllProducts () {
 
         {/* FILTER TABS */}
 
-        <div className='mb-2 px-3'>
+        {/* <div className='mb-2 px-3'>
           <div className='flex space-x-1 overflow-x-auto scrollbar-hide mb-6 pb-1'>
             {tabs.map(tab => (
               <button
@@ -399,7 +399,7 @@ export default function AllProducts () {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* PRODUCTS */}
 
